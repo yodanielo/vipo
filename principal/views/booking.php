@@ -1,22 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
-
-	<style type="text/css">
-
-	::selection{ background-color: #E13300; color: white; }
-	::moz-selection{ background-color: #E13300; color: white; }
-	::webkit-selection{ background-color: #E13300; color: white; }
-
-	body {
-		background-color: #fff;
-		margin: 40px;
-		font: 13px/20px normal Helvetica, Arial, sans-serif;
-		color: #4F5155;
-	}
-
+<style type="text/css">
 	a {
 		color: #003399;
 		background-color: transparent;
@@ -44,10 +26,6 @@
 		padding: 12px 10px 12px 10px;
 	}
 
-	#body{
-		margin: 0 15px 0 15px;
-	}
-	
 	p.footer{
 		text-align: right;
 		font-size: 11px;
@@ -63,8 +41,6 @@
 		-webkit-box-shadow: 0 0 8px #D0D0D0;
 	}
 	</style>
-</head>
-<body>
 
 <div id="container">
 	<h1>Welcome to CodeIgniter!</h1>
@@ -83,6 +59,3 @@
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 </div>
-
-</body>
-</html>

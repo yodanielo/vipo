@@ -1,0 +1,15 @@
+#cuerpototal{
+    #navbar_principal .navbar-inner {
+        border-left: 0px;
+        border-radius: 0px;
+        border-right: 0px;
+        border-top: 0px;
+        height: 50px;
+        .brand{
+            line-height:30px;
+        }
+        .nav li a {
+            line-height: 30px;
+        }
+    }
+}
