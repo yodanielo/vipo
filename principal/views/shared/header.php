@@ -35,6 +35,7 @@
         ?>
 
         <script type="text/javascript" src="<?= site_url("principal/js/general.js") ?>"></script>
+        <!--esta e suna prueba-->
     </head>
     <body>
         <div class="wrapper" id="cuerpototal">
