@@ -37,7 +37,7 @@
 |
 */
 
-$autoload['packages'] = array();
+$autoload['packages'] = array(APPPATH.'third_party');
 
 
 /*
@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array("session");
+$autoload['libraries'] = array('database');
 
 
 /*
@@ -64,7 +64,7 @@ $autoload['libraries'] = array("session");
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array("url");
+$autoload['helper'] = array('url');
 
 
 /*
@@ -80,7 +80,7 @@ $autoload['helper'] = array("url");
 |
 */
 
-$autoload['config'] = array("site");
+$autoload['config'] = array();
 
 
 /*

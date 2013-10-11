@@ -1,4 +1,5 @@
 <?php
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
@@ -32,7 +33,7 @@ if (defined('ENVIRONMENT'))
 	switch (ENVIRONMENT)
 	{
 		case 'development':
-			error_reporting(E_ERROR);
+			error_reporting(E_ALL);
 		break;
 	
 		case 'testing':
@@ -56,7 +57,7 @@ if (defined('ENVIRONMENT'))
  * as this file.
  *
  */
-	$system_path = 'system';
+	$system_path = '../system';
 
 /*
  *---------------------------------------------------------------
@@ -72,7 +73,7 @@ if (defined('ENVIRONMENT'))
  * NO TRAILING SLASH!
  *
  */
-	$application_folder = 'principal';
+	$application_folder = '../rest';
 
 /*
  * --------------------------------------------------------------------
@@ -147,7 +148,6 @@ if (defined('ENVIRONMENT'))
 
 	// ensure there's a trailing slash
 	$system_path = rtrim($system_path, '/').'/';
-
 	// Is the system path correct?
 	if ( ! is_dir($system_path))
 	{
