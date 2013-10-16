@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-10-2013 a las 07:19:47
+-- Tiempo de generación: 16-10-2013 a las 06:49:17
 -- Versión del servidor: 5.5.27
 -- Versión de PHP: 5.4.7
 
@@ -55,22 +55,6 @@ CREATE TABLE IF NOT EXISTS `aplicacion` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `aplicacionregistrada`
---
-
-CREATE TABLE IF NOT EXISTS `aplicacionregistrada` (
-  `IdAplicacionRegistrada` int(11) NOT NULL AUTO_INCREMENT,
-  `Aplicacion_IdAplicacion` int(11) NOT NULL,
-  `Token` varchar(255) NOT NULL,
-  `Usuario_IdPersona` int(11) NOT NULL,
-  PRIMARY KEY (`IdAplicacionRegistrada`),
-  KEY `fk_persona_has_Aplicacion_Aplicacion1` (`Aplicacion_IdAplicacion`),
-  KEY `fk_AplicacionRegistrada_Usuario1` (`Usuario_IdPersona`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `cabecera_reserva`
 --
 
@@ -81,6 +65,21 @@ CREATE TABLE IF NOT EXISTS `cabecera_reserva` (
   PRIMARY KEY (`idCabecera_Reserva`),
   KEY `FK_RESERVANTE` (`IdReservante`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `caja`
+--
+
+CREATE TABLE IF NOT EXISTS `caja` (
+  `idCaja` int(11) NOT NULL,
+  `FechaApertura` datetime DEFAULT NULL,
+  `FechaCierre` datetime DEFAULT NULL,
+  `IdCajero` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idCaja`),
+  KEY `fk_IdCajero` (`IdCajero`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -96,6 +95,59 @@ CREATE TABLE IF NOT EXISTS `clasificacion` (
   `IdAplicacionRegistrada` int(11) DEFAULT NULL,
   PRIMARY KEY (`idClasificacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comprobante_pago`
+--
+
+CREATE TABLE IF NOT EXISTS `comprobante_pago` (
+  `idComprobante_Pago` int(11) NOT NULL,
+  `Caja_idCaja` int(11) NOT NULL,
+  `IdPagador` int(11) DEFAULT NULL,
+  `IdCabecera_reserva` int(11) DEFAULT NULL,
+  `Total` decimal(10,4) DEFAULT NULL,
+  PRIMARY KEY (`idComprobante_Pago`),
+  KEY `fk_Comprobante_Pago_Caja1` (`Caja_idCaja`),
+  KEY `fk_IdPagador` (`IdPagador`),
+  KEY `fk_IdCabecera_reserva` (`IdCabecera_reserva`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_comprobante`
+--
+
+CREATE TABLE IF NOT EXISTS `detalle_comprobante` (
+  `idDetalle_Comprobante` int(11) NOT NULL,
+  `Comprobante_Pago_idComprobante_Pago` int(11) NOT NULL,
+  `Descripcion` varchar(150) DEFAULT NULL,
+  `IdReserva` int(11) DEFAULT NULL,
+  `Cantidad` int(11) DEFAULT NULL,
+  `PrecioUnitario` decimal(10,4) DEFAULT NULL,
+  `subtotal` decimal(10,4) DEFAULT NULL,
+  PRIMARY KEY (`idDetalle_Comprobante`),
+  KEY `fk_Detalle_Comprobante_Comprobante_Pago1` (`Comprobante_Pago_idComprobante_Pago`),
+  KEY `fk_IdReserva` (`IdReserva`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_pago`
+--
+
+CREATE TABLE IF NOT EXISTS `detalle_pago` (
+  `idDetalle_Pago` int(11) NOT NULL,
+  `Comprobante_Pago_idComprobante_Pago` int(11) NOT NULL,
+  `TipoPago` int(11) DEFAULT NULL COMMENT 'viene de "variable"\n',
+  `MontoTotal` decimal(10,4) DEFAULT NULL,
+  `FechaPago` datetime DEFAULT NULL,
+  PRIMARY KEY (`idDetalle_Pago`),
+  KEY `fk_Detalle_Pago_Comprobante_Pago1` (`Comprobante_Pago_idComprobante_Pago`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='aun faltan campos, segun el tipo de pago que se elija';
 
 -- --------------------------------------------------------
 
@@ -195,6 +247,34 @@ CREATE TABLE IF NOT EXISTS `reserva_habitacion` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE IF NOT EXISTS `rol` (
+  `idRol` int(11) NOT NULL,
+  `Nombre` varchar(45) DEFAULT NULL,
+  `Descripcion` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`idRol`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol_asignado`
+--
+
+CREATE TABLE IF NOT EXISTS `rol_asignado` (
+  `idRol_Asignado` int(11) NOT NULL,
+  `Rol_idRol` int(11) NOT NULL,
+  `UsuarioAplicacion_IdUsuarioAplicacion` int(11) NOT NULL,
+  PRIMARY KEY (`idRol_Asignado`),
+  KEY `fk_Rol_Asignado_Rol1` (`Rol_idRol`),
+  KEY `fk_Rol_Asignado_UsuarioAplicacion1` (`UsuarioAplicacion_IdUsuarioAplicacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuario`
 --
 
@@ -247,17 +327,37 @@ ALTER TABLE `acceso`
   ADD CONSTRAINT `fk_Acceso_UsuarioAplicacion1` FOREIGN KEY (`UsuarioAplicacion_IdUsuarioAplicacion`) REFERENCES `usuarioaplicacion` (`IdUsuarioAplicacion`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `aplicacionregistrada`
---
-ALTER TABLE `aplicacionregistrada`
-  ADD CONSTRAINT `fk_persona_has_Aplicacion_Aplicacion1` FOREIGN KEY (`Aplicacion_IdAplicacion`) REFERENCES `aplicacion` (`IdAplicacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_AplicacionRegistrada_Usuario1` FOREIGN KEY (`Usuario_IdPersona`) REFERENCES `usuario` (`IdPersona`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Filtros para la tabla `cabecera_reserva`
 --
 ALTER TABLE `cabecera_reserva`
   ADD CONSTRAINT `FK_RESERVANTE` FOREIGN KEY (`IdReservante`) REFERENCES `persona` (`IdPersona`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `caja`
+--
+ALTER TABLE `caja`
+  ADD CONSTRAINT `fk_IdCajero` FOREIGN KEY (`IdCajero`) REFERENCES `usuarioaplicacion` (`IdUsuarioAplicacion`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `comprobante_pago`
+--
+ALTER TABLE `comprobante_pago`
+  ADD CONSTRAINT `fk_Comprobante_Pago_Caja1` FOREIGN KEY (`Caja_idCaja`) REFERENCES `caja` (`idCaja`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_IdPagador` FOREIGN KEY (`IdPagador`) REFERENCES `persona` (`IdPersona`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_IdCabecera_reserva` FOREIGN KEY (`IdCabecera_reserva`) REFERENCES `cabecera_reserva` (`idCabecera_Reserva`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `detalle_comprobante`
+--
+ALTER TABLE `detalle_comprobante`
+  ADD CONSTRAINT `fk_Detalle_Comprobante_Comprobante_Pago1` FOREIGN KEY (`Comprobante_Pago_idComprobante_Pago`) REFERENCES `comprobante_pago` (`idComprobante_Pago`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_IdReserva` FOREIGN KEY (`IdReserva`) REFERENCES `reserva_habitacion` (`idReserva`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `detalle_pago`
+--
+ALTER TABLE `detalle_pago`
+  ADD CONSTRAINT `fk_Detalle_Pago_Comprobante_Pago1` FOREIGN KEY (`Comprobante_Pago_idComprobante_Pago`) REFERENCES `comprobante_pago` (`idComprobante_Pago`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `habitacion`
@@ -276,8 +376,8 @@ ALTER TABLE `housekeeping`
 -- Filtros para la tabla `ocupante`
 --
 ALTER TABLE `ocupante`
-  ADD CONSTRAINT `fk_Ocupante_Reserva_Habitacion1` FOREIGN KEY (`Reserva_Habitacion_idReserva`) REFERENCES `reserva_habitacion` (`idReserva`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Idpersona` FOREIGN KEY (`idOcupante`) REFERENCES `persona` (`IdPersona`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_Idpersona` FOREIGN KEY (`idOcupante`) REFERENCES `persona` (`IdPersona`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Ocupante_Reserva_Habitacion1` FOREIGN KEY (`Reserva_Habitacion_idReserva`) REFERENCES `reserva_habitacion` (`idReserva`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `persona`
@@ -291,6 +391,13 @@ ALTER TABLE `persona`
 ALTER TABLE `reserva_habitacion`
   ADD CONSTRAINT `fk_Reserva_Habitacion1` FOREIGN KEY (`Habitacion_idHabitacion`) REFERENCES `habitacion` (`idHabitacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Reserva_Habitacion_Cabecera_Reserva1` FOREIGN KEY (`Cabecera_Reserva_idCabecera_Reserva`) REFERENCES `cabecera_reserva` (`idCabecera_Reserva`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `rol_asignado`
+--
+ALTER TABLE `rol_asignado`
+  ADD CONSTRAINT `fk_Rol_Asignado_Rol1` FOREIGN KEY (`Rol_idRol`) REFERENCES `rol` (`idRol`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Rol_Asignado_UsuarioAplicacion1` FOREIGN KEY (`UsuarioAplicacion_IdUsuarioAplicacion`) REFERENCES `usuarioaplicacion` (`IdUsuarioAplicacion`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `usuarioaplicacion`
