@@ -37,7 +37,6 @@ class Format {
 	public function __construct($data = null, $from_type = null)
 	{
 		get_instance()->load->helper('inflector');
-
                 if($from_type=='php'){
                     //hay que detectar por la forma de la data
                     $from_type=$this->recognize_languaje($data);
