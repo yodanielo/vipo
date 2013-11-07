@@ -20,7 +20,7 @@
             }
         }
         ?>
-        <link rel="stylesheet" type="text/css" href="<?= site_url("less/index/nav.css") ?>" />
+        <link rel="stylesheet" type="text/css" href="<?= site_url("less/index/nav.less") ?>" />
         <script type="text/javascript">siteurl="<?= site_url() ?>";</script>
         <script type="text/javascript" src="<?= site_url("principal/paquetes/jquery-ui/js/jquery-ui-1.10.3.custom.min.js") ?>"></script>
         <?php

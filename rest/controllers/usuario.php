@@ -12,6 +12,10 @@ class usuario extends REST_Controller {
         //$this->load->view('booking');
     }
 
+    /**
+     * registra el login de un usuario en una aplicacion 
+     * url: /vipo/vipo/rest/usuario/login/format/json
+     */
     public function login_post() {
         $mivar = $this->post();
         $this->load->library("terminal");
@@ -43,7 +47,7 @@ class usuario extends REST_Controller {
             ), RPT_SATISFACTORIO, ""), 200);
         }
     }
-
+    
 }
 
 /* End of file welcome.php */
