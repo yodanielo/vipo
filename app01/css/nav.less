@@ -1,0 +1,85 @@
+@menuvipo_backcolor: #2C231C;
+@menuapp_backcolor: #F2A649;
+@menuapp_menuhover: #fff;
+@borde: darken(@menuapp_backcolor,20%);
+@color_letra: #666;
+
+.clase_degradado(@inicio, @fin){
+    background: @inicio;
+    background: -moz-linear-gradient(top, @inicio 0%, @fin 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@inicio), color-stop(100%,@fin)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, @inicio 0%,@fin 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, @inicio 0%,@fin 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, @inicio 0%,@fin 100%); /* IE10+ */
+    background: linear-gradient(to bottom, @inicio 0%,@fin 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@inicio', endColorstr='@fin',GradientType=0 ); /* IE6-9 */
+}
+*{
+    font-family: Inconsolata, Verdana, Arial, serif;
+    border:none;
+}
+body{
+    font-size: 1em;
+}
+html{
+    font-size: 62%;
+}
+a{
+    text-decoration: underline;
+    color:@menuapp_backcolor;
+}
+
+header{
+    display: block;
+    overflow: visible;
+    #menuvipo{
+        height: 6em;
+        display: block;
+        .clase_degradado(lighten(@menuvipo_backcolor,20%),@menuvipo_backcolor);
+        #col1welcome{
+            display: inline-block;
+            padding-top: 5px;
+        }
+        #col2menu{
+            .navbar{
+                border:none;
+                background: none;
+                a{
+                    color:@menuapp_backcolor;
+                    font-size:1.4em;
+                    &:hover{
+                        .clase_degradado(lighten(@menuvipo_backcolor,40%),lighten(@menuvipo_backcolor,20%));
+                        color:lighten(@menuapp_backcolor,20%);
+                    }
+                }
+                ul ul a{
+                    font-size: 1em;
+                    text-decoration: none;
+                    color: @color_letra;
+                }
+            }
+        }
+        #sistemanombre{
+            color: #ffffff;
+            font-size: 1.6em;
+            line-height: 1.6em;
+        }
+        #usuario{
+            color: #ffffff;
+            font-size: 1.4em;
+            line-height: 1.85em;
+        }
+
+    }
+    #menuapp{
+        border-top: 2px solid @borde;
+        height: 3em;
+        .clase_degradado(@menuapp_backcolor,darken(@menuapp_backcolor,20%));
+    }
+}
+
+/******************************************************************************/
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus{
+    .clase_degradado(lighten(@menuvipo_backcolor,40%),lighten(@menuvipo_backcolor,20%));
+    color:lighten(@menuapp_backcolor,20%)!important;
+}
