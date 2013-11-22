@@ -20,30 +20,65 @@ class usuario extends REST_Controller {
         $mivar = $this->post();
         $this->load->library("terminal");
         $db=$this->db;
+        
+
         $db->select(array(
-            'usuarioaplicacion.aplicacionregistrada_idaplicacionregistrada',
-            "usuarioaplicacion.idusuarioaplicacion"
+             'persona.IdPersona'
+            ,'persona.Nombres'
+            ,'persona.Apellidos'
+            ,'persona.Correo'
+            ,'persona.Direccion'
+            ,'persona.Telefono1'
+            ,'persona.Telefono2'
+            ,'persona.idAplicacionregistrada'
         ));
-        $db->from('usuario');
-        $db->join('usuarioaplicacion', 'usuario.IdPersona = usuarioaplicacion.Usuario_IdPersona');
-        $db->where('usuario.NombreUsuario', $mivar["username"]);
-        $db->where('usuario.Contrasena', $mivar["password"]);
-        $db->where('usuarioaplicacion.aplicacionregistrada_idaplicacionregistrada', $mivar["idapp"]);
+        $db->from('cuenta');
+        $db->join('persona', 'cuenta.Idcuenta = persona.IdPersona');
+        $db->join('aplicacionregistrada', 'persona.IdPersona = aplicacionregistrada.Idduenio');
+        $db->join('trabajador', 'persona.IdPersona = trabajador.Idtrabajador');
+        $db->where('cuenta.usuario', $mivar["username"]);
+        $db->where('cuenta.clave', $mivar["password"]);
+        $db->where('aplicacionregistrada.aplicacion_IdAplicacion', $mivar["idapp"]);
         $query = $this->db->get()->result();
-        if (count($query) == 0) {//el usuario no se encuentra
-            $this->response(respuesta(NULL, RPT_ERROR, "El usuario no está registrado para ésta aplicación"), 200);
-        } else {
-            //usuario encontrado, ahora registro su acceso y retorno le idusuarioaplicacion
-            $db->set("fecha","CURDATE()",FALSE);
-            $db->set("ip",$this->terminal->ipreal());
+
+        if (count($query) == 0) 
+        {
+            //el usuario no se encuentra
+            $this->response(respuesta(NULL, RPT_ERROR, "El usuario no está registrado para esta aplicación"), 200);
+        }
+        else 
+        {
+            //usuario encontrado, ahora registro su acceso
+            $db->set("Fecha","CURDATE()",FALSE);
+            $db->set("Ip",$this->terminal->ipreal());
             $db->set("usaproxy",$this->terminal->usaProxy());
-            $db->set("user_inserted",$query[0]->idusuarioaplicacion);
+            $db->set("usuario_Idusuario",$query[0]->IdPersona);
+            $db->set("user_inserted",$query[0]->IdPersona);
             $db->set("date_inserted","CURDATE()",FALSE);
             $db->set("estadoregistro",1);
-            $db->set("UsuarioAplicacion_IdUsuarioAplicacion",$query[0]->aplicacionregistrada_idaplicacionregistrada);
             $db->insert("acceso");
+
+            //Obtengo el/los rol(es) del usuario.
+            $db->select(array(
+                'rol.idRol'
+                ,'rol.Nombre'
+            ));
+            $db->from('rolasignado');
+            $db->join('rol', 'rolasignado.Rol_idRol = rol.idRol');
+            $db->where('rolasignado.usuario_Idusuario', $query[0]->IdPersona);
+            $query2 = $this->db->get()->result();
+            
             $this->response(respuesta(array(
-                "idusuarioapp"=>$query[0]->idusuarioaplicacion
+                "exito"=>true
+                ,"IdPersona"=>$query[0]->IdPersona
+                ,"Nombres"=>$query[0]->Nombres
+                ,"Apellidos"=>$query[0]->Apellidos
+                ,"Correo"=>$query[0]->Correo
+                ,"Direccion"=>$query[0]->Direccion
+                ,"Telefono1"=>$query[0]->Telefono1
+                ,"Telefono2"=>$query[0]->Telefono2
+                ,"idAplicacionregistrada"=>$query[0]->idAplicacionregistrada
+                ,"rol"=>$query2
             ), RPT_SATISFACTORIO, ""), 200);
         }
     }

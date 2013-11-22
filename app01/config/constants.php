@@ -36,7 +36,9 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
-define('REST_URL', "http://localhost/vipo.git/rest/");
+define('REST_URL', "http://www.vipo.com/rest/");
+define('RPT_SATISFACTORIO',1);
+define('RPT_ERROR',0);
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

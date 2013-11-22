@@ -1,4 +1,5 @@
 <?php
+session_start();
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
@@ -32,11 +33,11 @@ if (defined('ENVIRONMENT'))
 	switch (ENVIRONMENT)
 	{
 		case 'development':
-			error_reporting(E_ERROR);
+			//error_reporting(2);
 		break;
 	
 		case 'testing':
-                    error_reporting(E_ERROR);
+                    error_reporting(E_ALL);
 		case 'production':
 			error_reporting(0);
 		break;

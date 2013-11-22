@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
-class MyRest { 
+class RestClient { 
 
      private $curl ; 
      private $url ; 
@@ -21,10 +21,7 @@ class MyRest {
          curl_setopt($this->curl,CURLOPT_FOLLOWLOCATION,true); // This too 
          curl_setopt($this->curl,CURLOPT_HEADER,true); // THis verbose option for extracting the headers 
      } 
-     
-     /**
-      * 
-      */
+
      public function getPostRaw($SOAP_Action,$request){
          $resp=$this->post(REST_URL+$SOAP_Action, $request);
          return $resp->getResponse();
@@ -305,6 +302,6 @@ class MyRest {
              ->execute() 
              ->close(); 
      } 
-} 
+}
 
 ?>

@@ -29,6 +29,8 @@ class Padre extends CI_controller {
         $this->appname=$this->uri->segment(1);
         if($this->appname=="")
             show_404 ();
+        $this->params["css"]=array();
+        $this->params["scripts"]=array();
         //$this->params["css"][]=site_url("");
         //$this->params["scripts"][]=site_url("");
     }
@@ -39,7 +41,15 @@ class Padre extends CI_controller {
         echo '</pre>';
     }
 
-    public function loadHTML($page, $params=array(), $header="shared/header", $footer="shared/footer") {
+    function error_404() {
+        if (!empty($this->routes['404_override'])) {
+            redirect($this->routes["404_override"]);
+        } else {
+            show_404();
+        }
+    }
+    
+    public function loadHTML($page, $params=null, $header="shared/header", $footer="shared/footer") {
         if (!$params)
             $params = array();
         $default = array(
@@ -47,6 +57,9 @@ class Padre extends CI_controller {
             "sitedescription" => config_item("sitedescription"),
             "author" => config_item("author"),
             "owner" => config_item("owner"),
+            "pagetitle"=>"",
+            "css"=>array(),
+            "scripts"=>array(),
         );
         $cad = '';
         $params = array_merge_recursive($default, $params);

@@ -9,7 +9,13 @@ class aplicacion extends REST_Controller {
     public function registrarAplicacion_post(){
         
     }
-    
+    /**
+     * <code>
+     * array(
+     *     "url"=>"mi-url"
+     * )
+     * </code>
+     */
     public function getApplication_post(){
         $mivar=$this->post();
         $db=$this->db;
@@ -17,8 +23,7 @@ class aplicacion extends REST_Controller {
             "aplicacion.nombre",
             "aplicacionregistrada.titulo",
             "aplicacionregistrada.url",
-            "aplicacionregistrada.idaplicacionregistrada",
-            "aplicacionregistrada.token"
+            "aplicacionregistrada.idduenio",
         ))
         ->from("aplicacion")
         ->join("aplicacionregistrada","aplicacion.idaplicacion=aplicacionregistrada.aplicacion_idaplicacion")

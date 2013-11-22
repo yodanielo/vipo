@@ -882,7 +882,6 @@ class CI_Loader {
 		// The directory path can be included as part of the class name,
 		// but we don't want a leading slash
 		$class = str_replace('.php', '', trim($class, '/'));
-
 		// Was the path included with the class name?
 		// We look for a slash to determine this
 		$subdir = '';
@@ -894,17 +893,14 @@ class CI_Loader {
 			// Get the filename from the path
 			$class = substr($class, $last_slash + 1);
 		}
-
 		// We'll test for both lowercase and capitalized versions of the file name
 		foreach (array(ucfirst($class), strtolower($class)) as $class)
 		{
 			$subclass = APPPATH.'libraries/'.$subdir.config_item('subclass_prefix').$class.'.php';
-
 			// Is this a class extension request?
-			if (file_exists($subclass))
+                        if (file_exists($subclass))
 			{
 				$baseclass = BASEPATH.'libraries/'.ucfirst($class).'.php';
-
 				if ( ! file_exists($baseclass))
 				{
 					log_message('error', "Unable to load the requested class: ".$class);
@@ -947,13 +943,13 @@ class CI_Loader {
 				// Does the file exist?  No?  Bummer...
 				if ( ! file_exists($filepath))
 				{
-					continue;
+                                    continue;
 				}
 
 				// Safety:  Was the class already loaded by a previous call?
 				if (in_array($filepath, $this->_ci_loaded_files))
 				{
-					// Before we deem this to be a duplicate request, let's see
+                                        // Before we deem this to be a duplicate request, let's see
 					// if a custom object name is being supplied.  If so, we'll
 					// return a new instance of the object
 					if ( ! is_null($object_name))
@@ -1023,7 +1019,7 @@ class CI_Loader {
 					// first, global next
 					if (defined('ENVIRONMENT') AND file_exists($path .'config/'.ENVIRONMENT.'/'.strtolower($class).'.php'))
 					{
-						include($path .'config/'.ENVIRONMENT.'/'.strtolower($class).'.php');
+                                            include($path .'config/'.ENVIRONMENT.'/'.strtolower($class).'.php');
 						break;
 					}
 					elseif (defined('ENVIRONMENT') AND file_exists($path .'config/'.ENVIRONMENT.'/'.ucfirst(strtolower($class)).'.php'))

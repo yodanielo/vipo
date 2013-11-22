@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -17,20 +18,54 @@ class MY_Router extends CI_Router {
         $exonerados = array("less");
         if (array_search($segments[0], $exonerados) === FALSE) {
             if (count($segments) > 0) {
+                //hay session?
+                //si:{
+                //  hay usuario logueado???
+                //  no:{
+                //      mando al login
+                //  }
+                //  si:{
+                //      dejo pasar
+                //  }
+                //}
+                //no:{
+                //  creo una
+                //  mando al login
+                //}
+                //
+                //------ en el login
+                //al login i o si va llegar con una session
+                //hay info de la app?
+                //si:{
+                //  carga normal
+                //}
+                //no:{
+                //  cargo datos de la app
+                //  lleno la sesion
+                //  cargo el login
+                //}
+                //
                 //validando nombre de aplicacion
-                $this->MyRest->
-                //setando appname
-                $this->config->set_item("appname", $segments[0]);
+                $appurl = $segments[0];
                 $segments = array_slice($segments, 1);
-                if (count($segments) == 0) {
-                    $segments[0] = $this->routes["default_controller"];
+                if (isset($_SESSION[$appurl])) {
+                    if(isset($_SESSION[$appurl]["username"])){
+                        //dejo pasar
+                        return parent::_validate_request($segments);
+                    }
+                    else{
+                        $segments=array("user","login");
+                        return parent::_validate_request($segments);
+                    }
+                } else {
+                    //seteando appname
+                    $segments=array("user","login");
+                    return parent::_validate_request($segments);
                 }
-                return parent::_validate_request($segments);
             } else {
                 return $this->error_404();
             }
-        }
-        else
+        } else
             return parent::_validate_request($segments);
     }
 

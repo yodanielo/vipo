@@ -1,8 +1,5 @@
 <?php
 
-const RPT_SATISFACTORIO = "1";
-const RPT_ERROR = "0";
-
 /*
  * 20131105 Daniel Pomalaza
  */

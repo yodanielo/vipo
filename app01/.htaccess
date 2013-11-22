@@ -4,8 +4,11 @@ Options FollowSymLinks
     
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    #RewriteRule ^(.*)?$ index.php/$1 [L]
-    RewriteRule ^([^/]*)(/.*)?$ index.php$2?appname=$1 [L]
+    RewriteRule ^(.*)?$ index.php/$1 [L]
+
+    #RewriteCond %{HTTP_HOST} !^www\.app01vipo\.com$
+    #RewriteCond %{HTTP_HOST} ([^.]+)\.app01vipo\.com$
+    #RewriteRule ^([^/]*)(/.*)?$ index.php?appname=$1/$2 [L]
 </IfModule> 
 
 <IfModule !mod_rewrite.c>
