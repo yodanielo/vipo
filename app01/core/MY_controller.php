@@ -27,9 +27,8 @@ class Padre extends CI_controller {
         parent::__construct();
         $this->params=array();
         $this->appname=$this->uri->segment(1);
-        if($this->appname=="")
-            show_404 ();
         $this->params["css"]=array();
+        $this->params["css_after"]=array();
         $this->params["scripts"]=array();
         //$this->params["css"][]=site_url("");
         //$this->params["scripts"][]=site_url("");
@@ -49,7 +48,8 @@ class Padre extends CI_controller {
         }
     }
     
-    public function loadHTML($page, $params=null, $header="shared/header", $footer="shared/footer") {
+    public function loadHTML($page, $header="shared/header", $footer="shared/footer") {
+        $params=$this->params;
         if (!$params)
             $params = array();
         $default = array(
@@ -59,6 +59,7 @@ class Padre extends CI_controller {
             "owner" => config_item("owner"),
             "pagetitle"=>"",
             "css"=>array(),
+            "css_after"=>array(),
             "scripts"=>array(),
         );
         $cad = '';
