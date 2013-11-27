@@ -31,6 +31,7 @@ class usuario extends REST_Controller {
             ,'persona.Telefono1'
             ,'persona.Telefono2'
             ,'persona.idAplicacionregistrada'
+            ,'cuenta.usuario'
         ));
         $db->from('cuenta');
         $db->join('persona', 'cuenta.Idcuenta = persona.IdPersona');
@@ -44,7 +45,7 @@ class usuario extends REST_Controller {
         if (count($query) == 0) 
         {
             //el usuario no se encuentra
-            $this->response(respuesta(NULL, RPT_ERROR, "El usuario no está registrado para esta aplicación"), 200);
+            $this->response(respuesta(NULL, RPT_ERROR, "Error: Usuario o contraseña equivocados."), 200);
         }
         else 
         {
@@ -77,9 +78,10 @@ class usuario extends REST_Controller {
                 ,"Direccion"=>$query[0]->Direccion
                 ,"Telefono1"=>$query[0]->Telefono1
                 ,"Telefono2"=>$query[0]->Telefono2
+                ,"Username"=>$query[0]->usuario
                 ,"idAplicacionregistrada"=>$query[0]->idAplicacionregistrada
                 ,"rol"=>$query2
-            ), RPT_SATISFACTORIO, ""), 200);
+            ), RPT_SATISFACTORIO, "Bienvenid@ ".$query[0]->usuario), 200);
         }
     }
     

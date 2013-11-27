@@ -27,9 +27,13 @@ class Padre extends CI_controller {
         parent::__construct();
         $this->params=array();
         $this->appname=$this->uri->segment(1);
+        $this->params["appname"]=$this->appname;
         $this->params["css"]=array();
         $this->params["css_after"]=array();
         $this->params["scripts"]=array();
+        if(isset($_SESSION[$this->appname]["usuario"]))
+            $this->params["username"]=$_SESSION[$this->appname]["usuario"]->Username;
+
         //$this->params["css"][]=site_url("");
         //$this->params["scripts"][]=site_url("");
     }
@@ -49,6 +53,10 @@ class Padre extends CI_controller {
     }
     
     public function loadHTML($page, $header="shared/header", $footer="shared/footer") {
+        if($header==NULL)
+            $header="";
+        if($footer==NULL)
+            $footer="";
         $params=$this->params;
         if (!$params)
             $params = array();

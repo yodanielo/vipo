@@ -15,7 +15,27 @@ class MY_Router extends CI_Router {
 
     // this is just the same method as in Router.php, with show_404() replaced by $this->error_404();
     function _validate_request($segments) {
+        
+        for($i=0;$i<count($segments);$i++){
+            $segments[$i]= str_replace("-", "_", $segments[$i]);
+        }
+        
+        //exonerados del prefjo del appname
         $exonerados = array("less");
+        //exonerados de validar el login
+        $exonerados2=array(
+            "/(user|error)\/(.*)/"
+        );
+        /**
+         * user/login/algo
+         * user/login/algo/
+         * user/login/
+         * user/login
+         * user/enter
+         * error/error404
+         * error/noautorizado
+         * error/interno
+         */
         if (array_search($segments[0], $exonerados) === FALSE) {
             if (count($segments) > 0) {
                 //hay session?
@@ -48,8 +68,14 @@ class MY_Router extends CI_Router {
                 //validando nombre de aplicacion
                 $appurl = $segments[0];
                 $segments = array_slice($segments, 1);
+                foreach ($exonerados2 as $value) {
+                    if(preg_match($value, implode("/", $segments))==1){
+                        return parent::_validate_request($segments);
+                    }
+                }
+
                 if (isset($_SESSION[$appurl])) {
-                    if(isset($_SESSION[$appurl]["username"])){
+                    if(isset($_SESSION[$appurl]["usuario"])){
                         //dejo pasar
                         return parent::_validate_request($segments);
                     }

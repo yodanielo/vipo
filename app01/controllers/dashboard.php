@@ -9,8 +9,7 @@
  */
 class dashboard extends Padre{
     function index(){
-        $params=array("username"=>"Yodanielo");
-        $this->loadHTML("dashboard", $params);
+        $this->loadHTML("dashboard");
     }
     function notfound(){
         $this->debug(array(
